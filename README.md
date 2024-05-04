@@ -29,3 +29,7 @@ marimo run app.py
 ## Using the app
 
 You can press the "execute" button right away to load in an example data set. It should take about 2-4 minutes to fully load, process, and visualize the data set on standard laptops. From there you can explore the tabs to see other views of this data set, or load in new data, by selecting a site from the table and a system ID from the dropdown menu in the upper left. Data and results are cached during a session for quick reloaded (<5 seconds). Your cache list is visible in the secondary tab, under the site table. Use the toggle switch in the upper left to choose between loading data from the full site list or the cache list.
+
+<img width="1408" alt="Screenshot 2024-05-04 at 2 39 54 PM" src="https://github.com/slacgismo/sdt-pvdb-app/assets/1463184/2845a029-2d56-4390-b409-cdf377a0e525">
+<img width="1441" alt="Screenshot 2024-05-04 at 2 40 08 PM" src="https://github.com/slacgismo/sdt-pvdb-app/assets/1463184/160df534-2fda-48a5-a9d2-793c8263447b">
+

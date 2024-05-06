@@ -18,7 +18,7 @@ export REDSHIFT_API_KEY=[your key here]
 
 After your personal API key has been set an an environment variable, you will be able to use the app to pull data for analysis from PVDB.
 
-## Running Marimo app
+## Starting the app
 
 After installation and setting up your API key, simply execute the following command in the project folder:
 

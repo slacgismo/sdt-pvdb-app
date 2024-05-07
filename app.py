@@ -77,10 +77,11 @@ def __(dh, mo):
 
 
 @app.cell
-def __(capacity, clipping, daily, heatmaps, losses, mo, timeshift):
+def __(capacity, clipping, daily, heatmaps, losses, mo, polar, timeshift):
     mo.ui.tabs(
         {
             "data viewer": heatmaps,
+            "polar": polar,
             "losses": losses,
             "daily data quality": daily,
             "time shifts": timeshift,
@@ -98,6 +99,7 @@ def __():
 
     # plt.rcParams["figure.dpi"] = 200
     # plt.rcParams["savefig.dpi"] = 200
+    import seaborn as sns
     import numpy as np
     import pandas as pd
     import os
@@ -138,8 +140,15 @@ def __():
         os,
         pd,
         plt,
+        sns,
         sys,
     )
+
+
+@app.cell
+def __(dh):
+    dh.data_sampling
+    return
 
 
 @app.cell
@@ -450,8 +459,24 @@ def __(dh, mo, static_plots):
 
 @app.cell
 def __(mo, static_plots):
-    timeshift = mo.center(static_plots["timeshift"])
+    timeshift = mo.vstack(
+        [
+            mo.center(mo.md("## Time shift detection and correction")),
+            mo.center(static_plots["timeshift"]),
+        ]
+    )
     return timeshift,
+
+
+@app.cell
+def __(mo, static_plots):
+    polar = mo.vstack(
+        [
+            mo.center(mo.md("## Polar view of power data")),
+            mo.center(static_plots["polar"]),
+        ]
+    )
+    return polar,
 
 
 @app.cell
@@ -480,7 +505,7 @@ def __(dh, mo, static_plots):
 
 
 @app.cell
-def __(cache, dh, dse, np, plt):
+def __(cache, dh, dse, np, plt, sns):
     @cache
     def make_static_plots(site_key, system_key):
         try:
@@ -522,6 +547,24 @@ def __(cache, dh, dse, np, plt):
         )
         plt.plot(dh.day_index, implemented, color="blue", label="implemented")
         plt.legend()
+        if dh.data_sampling == 5:
+            _ = dh.plot_polar_transform(lat=33.9207, lon=-117.5357, tz_offset=-8)
+        else:
+            _ = dh.plot_polar_transform(
+                lat=33.9207,
+                lon=-117.5357,
+                tz_offset=-8,
+                elevation_round=2,
+                azimuth_round=4,
+            )
+        fig = plt.figure(figsize=(10, 6))
+        ax = fig.add_subplot(111)
+        pt = sns.heatmap(
+            np.clip(dh.polar_transform.transformed_data, 0, np.inf),
+            cmap="plasma",
+            alpha=1,
+            ax=ax,
+        )
         out = {
             "pie": _pie,
             "waterfall": _waterfall,
@@ -531,6 +574,7 @@ def __(cache, dh, dse, np, plt):
             "capacity": dh.plot_capacity_change_analysis(figsize=(8, 5)),
             "clipping": dh.plot_clipping(figsize=(12, 6)),
             "timeshift": tsh,
+            "polar": pt,
         }
         return out
     return make_static_plots,

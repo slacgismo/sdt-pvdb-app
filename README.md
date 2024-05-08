@@ -1,5 +1,5 @@
 # sdt-pvdb-app
-A [Marimo app](https://marimo.io/?site) for applying Solar Data Tools to GISMo's photovolaic database (PVDB)
+A [Marimo app](https://marimo.io/?site) for applying [Solar Data Tools](https://github.com/slacgismo/solar-data-tools) to GISMo's photovolaic database (PVDB)
 
 ## Installation
 
